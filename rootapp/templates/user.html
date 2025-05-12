@@ -1,0 +1,131 @@
+{% block content %} {% load static %}
+<style>
+  body {
+    font-family: "Roboto", sans-serif;
+    background: url("{% static 'image.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+  }
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 120px auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  h2 {
+    font-size: 2.2em;
+    color: #00f7ff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 12px rgba(0, 247, 255, 0.5);
+  }
+
+  p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  li {
+    margin: 10px;
+  }
+
+  a {
+    display: inline-block;
+    padding: 15px 25px;
+    background: linear-gradient(45deg, #00f7ff, #4fffba);
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 247, 255, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  a:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(0, 247, 255, 0.6);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .blue-btn {
+    background-color: #007bff; /* Blue color */
+    text align:center;
+    color: white; /* Text color */
+    padding: 10px 20px; /* Size of the button */
+    font-size: 16px; /* Font size */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.blue-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.center-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+.btn{
+  text-align:center;
+}
+</style>
+
+<div class="container">
+  <h2>User Dashboard</h2>
+  <ul>
+    <li><a href="{% url 'user_batch_tasks' 1 %}">Batch 1</a></li>
+    <li><a href="{% url 'user_batch_tasks' 2 %}">Batch 2</a></li>
+    <li><a href="{% url 'user_batch_tasks' 3 %}">Batch 3</a></li>
+  </ul>
+</div>
+<div class="container">
+  <h2>Smart Schedule</h2>
+  <ul>
+    <li><a href="{% url 'optimize' %}">Optimize Schedule</a></li>
+    <li><a href="{% url 'completed_tasks' %}">Completed Tasks</a></li>
+    <li><a href="{% url 'scheduled_tasks' %}">Schedule Tasks</a></li>
+     <li><a href="{% url 'conflicting_tasks' %}">Conflicting Tasks</a></li> <!-- New button -->
+    <li><a href="{% url 'ongoing_tasks' %}">Ongoing Tasks</a></li>
+  </ul>
+</div>
+<div class="btn">
+  <button onclick="window.location.href='{% url 'index' %}'" class="blue-btn">
+    Back
+</button>
+</div>
+{% endblock %}

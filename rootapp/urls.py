@@ -1,0 +1,26 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('select-role/', views.select_role, name='select_role'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('batch/<int:batch_id>/', views.batch_tasks, name='batch_tasks'),
+    path('add-task/<int:batch_id>/', views.add_task, name='add_task'),
+    path('user-dashboard/', views.user_dashboard, name='user_dashboard'),
+    path('user-batch/<int:batch_id>/', views.user_batch_tasks, name='user_batch_tasks'),
+    path('user-add-task/<int:batch_id>/', views.user_add_task, name='user_add_task'),
+    path('user-update-task/<int:task_id>/', views.user_update_task, name='user_update_task'),
+    path('admin-update-task/<int:task_id>/', views.admin_update_task, name='admin_update_task'),
+    path('user-dashboard/', views.user_dashboard, name='user_dashboard'), 
+    path('optimize/', views.optimize, name='optimize'),
+    path('completed_tasks/', views.completed_tasks, name='completed_tasks'),
+    path('task/delete/<int:task_id>/', views.user_delete_task, name='user_delete_task'),
+    path('task/mark_completed/<int:task_id>/', views.mark_task_completed, name='mark_task_completed'),
+    path('scheduled_tasks/', views.scheduled_tasks, name='scheduled_tasks'),
+    path('ongoing_tasks/', views.ongoing_tasks, name='ongoing_tasks'),
+   # path('admin_delete/',views.admin_delete, name='admin_delete'),
+    path('submit_feedback/<int:task_id>/', views.submit_feedback, name='submit_feedback'),
+    path('predict_emotion/', views.predict_emotion, name='predict_emotion'),
+     path('conflicting-tasks/', views.conflicting_tasks, name='conflicting_tasks'),
+     path('feedback_results/', views.feedback_results, name='feedback_results'),
+   ]

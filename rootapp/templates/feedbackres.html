@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback Sentiment Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Basic Reset & Background */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e4f5);
+            padding: 40px 20px;
+            color: #2c3e50;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            animation: fadeInTop 1.2s ease;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        canvas {
+            width: 300px !important;
+            height: 300px !important;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            animation: fadeScale 1.5s ease forwards;
+            transform: scale(0.9);
+            opacity: 0;
+        }
+
+        canvas:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        canvas:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        /* Animations */
+        @keyframes fadeInTop {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Feedback Sentiment Analysis</h1>
+
+    <div class="chart-container">
+        <canvas id="emotionPieChart"></canvas>
+        <canvas id="categoryBarChart"></canvas>
+    </div>
+
+    <script>
+        const emotionData = {{ emotion_counts|safe }};
+
+        const pieLabels = Object.keys(emotionData);
+        const pieData = Object.values(emotionData);
+
+        const emotionCategoryMap = {
+            positive: ['joy', 'love'],
+            negative: ['anger', 'fear', 'sad'],
+            neutral: ['surprise']
+        };
+
+        const categoryCounts = {
+            positive: 0,
+            negative: 0,
+            neutral: 0
+        };
+
+        for (const [emotion, count] of Object.entries(emotionData)) {
+            for (const [category, emotions] of Object.entries(emotionCategoryMap)) {
+                if (emotions.includes(emotion.toLowerCase())) {
+                    categoryCounts[category] += count;
+                }
+            }
+        }
+
+        // Pie Chart
+        const ctxPie = document.getElementById('emotionPieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: pieLabels,
+                datasets: [{
+                    data: pieData,
+                    backgroundColor: [
+                        '#e74c3c', // red
+                        '#3498db', // blue
+                        '#f1c40f', // yellow
+                        '#2ecc71', // green
+                        '#9b59b6', // purple
+                        '#e67e22', // orange
+                        '#1abc9c'  // teal
+                    ],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#34495e',
+                            font: {
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart
+        const ctxBar = document.getElementById('categoryBarChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Positive', 'Negative', 'Neutral'],
+                datasets: [{
+                    label: 'Emotion Category Count',
+                    data: [
+                        categoryCounts.positive,
+                        categoryCounts.negative,
+                        categoryCounts.neutral
+                    ],
+                    backgroundColor: ['#2ecc71', '#e74c3c', '#f39c12'],
+                    borderRadius: 8,
+                    barPercentage: 0.5
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                animation: {
+                    duration: 1400,
+                    easing: 'easeOutElastic'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1,
+                            color: '#34495e'
+                        },
+                        grid: {
+                            color: '#ecf0f1'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#34495e'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

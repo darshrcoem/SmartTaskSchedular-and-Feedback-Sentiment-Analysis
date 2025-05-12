@@ -1,0 +1,200 @@
+{% load static %}
+<div class="blur-container">
+  <h2>Completed Tasks</h2>
+
+  {% if completed_tasks %}
+  <table
+    border="1"
+    style="width: 100%; color: white; border-collapse: collapse"
+  >
+    <tr>
+      <th>Task</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Priority</th>
+      <th>Created By</th>
+      <th>Feedback</th>
+    </tr>
+    {% for task in completed_tasks %}
+    <tr>
+      <td>{{ task.task_description }}</td>
+      <td>{{ task.date }}</td>
+      <td>{{ task.time }}</td>
+      <td>{{ task.priority }}</td>
+      <td>{{ task.created_by }}</td>
+      <td>
+        {% if task.created_by == 'admin' %}
+        <!-- Check if the task is created by admin -->
+        {% if task.feedback %}
+        <!-- Check if feedback is already given -->
+        <p>{{ task.feedback }}</p>
+        <!-- Display the feedback -->
+        {% else %}
+        <form method="POST" action="{% url 'submit_feedback' task.id %}" class="feedback-form">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="feedback"
+            placeholder="Enter feedback"
+            class="feedback-input"
+            required
+          />
+          <button type="submit" class="blue-btn">Submit</button>
+        </form>
+        {% endif %} {% else %} N/A {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No completed tasks yet.</p>
+  {% endif %}
+</div>
+<div class="btn">
+  <button
+    onclick="window.location.href='{% url 'user_dashboard' %}'"
+    class="blue-btn"
+  >
+    User Dashboard
+  </button>
+</div>
+<style>
+  .feedback-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.feedback-input {
+  width: 80%;
+  padding: 10px;
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.8);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feedback-input:focus {
+  border-color: #00c6ff;
+  box-shadow: 0 0 8px rgba(0, 198, 255, 0.8);
+}
+
+.feedback-btn {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.feedback-btn:hover {
+  background: linear-gradient(to right, #0072ff, #00c6ff);
+  transform: scale(1.05);
+}
+
+.feedback-text {
+  font-style: italic;
+  color: #00c6ff;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.feedback-na {
+  color: #ccc;
+  font-style: italic;
+}
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("{% static 'image2.jpg' %}") no-repeat center center fixed;
+      background-size: cover;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .blur-container {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.05); /* semi-transparent white */
+      padding: 20px;
+      margin: 40px auto;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: transparent;
+      color: #fff;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    th {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    tr:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    tr:hover {
+      background-color: rgba(0, 255, 255, 0.1);
+      transition: 0.3s ease;
+    }
+
+    p {
+      color: white;
+      font-style: italic;
+      margin-top: 20px;
+    }
+
+    h2 {
+      color: white;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .blue-btn {
+      background-color: #007bff; /* Blue color */
+      text align:center;
+      color: white; /* Text color */
+      padding: 10px 20px; /* Size of the button */
+      font-size: 16px; /* Font size */
+      border: none; /* Remove border */
+      border-radius: 5px; /* Rounded corners */
+      cursor: pointer; /* Pointer on hover */
+      transition: background-color 0.3s; /* Smooth transition */
+  }
+
+  .blue-btn:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  .center-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Full viewport height */
+  }
+  .btn{
+    text-align:center;
+  }
+</style>
